@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send & Verify OTP</title>
+</head>
+<body>
+    <h2>Send OTP</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Enter Email" required>
+        <button type="submit" name="send_otp">Send OTP</button>
+    </form>
+
+    <h2>Verify OTP</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="otp" placeholder="Enter OTP" required>
+        <button type="submit" name="verify_otp">Verify OTP</button>
+    </form>
+
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+</body>
+</html>

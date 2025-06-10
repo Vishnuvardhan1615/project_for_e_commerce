@@ -8,6 +8,7 @@ function OTPForm() {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/otp_page', {
         method: 'POST',
+      
         headers: {
           'Content-Type': 'application/json',
         },
@@ -29,6 +30,7 @@ function OTPForm() {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/verify', {
         method: 'POST',
+      
         headers: {
           'Content-Type': 'application/json',
         },
@@ -37,7 +39,7 @@ function OTPForm() {
       const data = await response.json();
 
       if (response.ok) {
-        setMsg(`${data.status}: ${data.message}`);
+        setMsg(` ${data.message}`);
       } else {
         setMsg(`OTP Mismatch - Entered: ${data.input_otp}, Expected: ${data.stored_otp}`);
       }
@@ -68,12 +70,6 @@ function OTPForm() {
       />
       <button onClick={otpverify}>Verify OTP</button>
       <p>{msg}</p>
-    <h2>Resend OTP</h2>
-      <button onClick={sendOtp}>Resend OTP</button>
-      <p>{msg}</p>
-    <h2>OTP Status</h2>
-      <p>{msg}</p>
-      
     </div>
   );
 }

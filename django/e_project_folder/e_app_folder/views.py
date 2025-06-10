@@ -5,10 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import random
 from datetime import datetime, timedelta
-from datetime import datetime
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+from django.core.cache import cache
 
 @csrf_exempt
 def otp_page(request):
@@ -20,13 +19,11 @@ def otp_page(request):
                 return JsonResponse({'error': 'Email is required'}, status=400)
             else:
                 otp = str(random.randint(100000, 999999))
-        
-                request.session['otp'] = otp
-                request.session['email'] = email
-                request.session['otp_created_at'] = datetime.now().isoformat()
                 
-            
-                try:
+                cache.set(f"otp_{email}", otp, timeout=300)  # Store OTP in cache for 5 minutes
+                print("Cache OTP set:", cache.get(f"otp_{email}"))
+                
+                try:    
                     send_mail(
                         'Your OTP Code',
                         f'Your OTP is: {otp} (valid for 5 minutes)',
@@ -46,28 +43,21 @@ def otp_page(request):
     return JsonResponse({'error': 'Only POST requests allowed'}, status=405)
 
 
-
 @csrf_exempt
 def verify(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)  # Get JSON data from request
+            email = data.get('email', '')
             input_otp = data.get('otp', '')
-            stored_otp = request.session.get('otp')
-            created_at = request.session.get('otp_created_at')
+            stored_otp = cache.get(f"otp_{email}")
 
             if not input_otp:
                 return JsonResponse({'error': 'Please enter the OTP'}, status=400)
             elif input_otp != stored_otp:
-                # return JsonResponse({'error': input_otp,' ',stored_otp}, status=400)
                 return JsonResponse({'error': 'OTP mismatch', 'input_otp': input_otp, 'stored_otp': stored_otp}, status=400)
             else:
-                if created_at:
-                    created_time = datetime.fromisoformat(created_at)
-                    if datetime.now() > created_time + timedelta(minutes=5):
-                        return JsonResponse({'error': 'OTP expired'}, status=400)
-                    else:
-                        return JsonResponse({'message': 'OTP verified successfully ✅'})
+                return JsonResponse({'message': 'OTP verified successfully ✅'})
         except Exception as e:
             print("❌ Error parsing request:", e)
             return JsonResponse({'error': 'Invalid request format'}, status=400)
@@ -88,6 +78,7 @@ def otp_page12(request):
                 request.session['otp'] = otp
                 request.session['email'] = email
                 request.session['otp_created_at'] = datetime.now().isoformat()
+                request.session.modified = True  # Ensure session is marked as modified
 
                 try:
                     send_mail(

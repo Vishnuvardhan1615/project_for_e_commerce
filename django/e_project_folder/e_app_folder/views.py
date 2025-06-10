@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import random
 from datetime import datetime, timedelta
-
+from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
@@ -20,6 +20,12 @@ def otp_page(request):
                 return JsonResponse({'error': 'Email is required'}, status=400)
             else:
                 otp = str(random.randint(100000, 999999))
+        
+                request.session['otp'] = otp
+                request.session['email'] = email
+                request.session['otp_created_at'] = datetime.now().isoformat()
+                
+            
                 try:
                     send_mail(
                         'Your OTP Code',
@@ -33,6 +39,35 @@ def otp_page(request):
                     print("Error sending email:", e)
                     message = f'Failed to send OTP: {str(e)}'
                 return JsonResponse({'message': email,'status': otp,})
+        except Exception as e:
+            print("❌ Error parsing request:", e)
+            return JsonResponse({'error': 'Invalid request format'}, status=400)
+
+    return JsonResponse({'error': 'Only POST requests allowed'}, status=405)
+
+
+
+@csrf_exempt
+def verify(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)  # Get JSON data from request
+            input_otp = data.get('otp', '')
+            stored_otp = request.session.get('otp')
+            created_at = request.session.get('otp_created_at')
+
+            if not input_otp:
+                return JsonResponse({'error': 'Please enter the OTP'}, status=400)
+            elif input_otp != stored_otp:
+                # return JsonResponse({'error': input_otp,' ',stored_otp}, status=400)
+                return JsonResponse({'error': 'OTP mismatch', 'input_otp': input_otp, 'stored_otp': stored_otp}, status=400)
+            else:
+                if created_at:
+                    created_time = datetime.fromisoformat(created_at)
+                    if datetime.now() > created_time + timedelta(minutes=5):
+                        return JsonResponse({'error': 'OTP expired'}, status=400)
+                    else:
+                        return JsonResponse({'message': 'OTP verified successfully ✅'})
         except Exception as e:
             print("❌ Error parsing request:", e)
             return JsonResponse({'error': 'Invalid request format'}, status=400)

@@ -25,6 +25,28 @@ function OTPForm() {
       console.error(err);
     }
   };
+  const otpverify = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, otp: msg }), // Assuming msg contains the OTP
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setMsg(`${data.status}: ${data.message}`);
+      } else {
+        setMsg(`OTP Mismatch - Entered: ${data.input_otp}, Expected: ${data.stored_otp}`);
+      }
+    }
+    catch (err) {
+      setMsg('Something went wrong');
+      console.error(err);
+    }
+  } 
 
   return (
     <div>
@@ -37,6 +59,21 @@ function OTPForm() {
       />
       <button onClick={sendOtp}>Send OTP</button>
       <p>{msg}</p>
+    
+    <h2>Verify OTP</h2>
+      <input
+        type="text"
+        placeholder="Enter OTP"
+        onChange={e => setMsg(e.target.value)} // Assuming you want to handle OTP input here
+      />
+      <button onClick={otpverify}>Verify OTP</button>
+      <p>{msg}</p>
+    <h2>Resend OTP</h2>
+      <button onClick={sendOtp}>Resend OTP</button>
+      <p>{msg}</p>
+    <h2>OTP Status</h2>
+      <p>{msg}</p>
+      
     </div>
   );
 }

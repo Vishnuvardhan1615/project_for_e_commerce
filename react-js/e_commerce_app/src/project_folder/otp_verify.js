@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import Succspage from './succspage';
 
 function OtpVerify({ email }) {
   const [otp, setOtp] = useState('');
   const [message, setMessage] = useState('');
+  const [successmessag, setsuccessmessage] = useState(false);
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
@@ -14,7 +16,15 @@ function OtpVerify({ email }) {
     });
     const data = await response.json();
     setMessage(data.message || data.error);
+    if(response.ok) {
+      setsuccessmessage(true);
+    }
   };
+
+  if(successmessag) {
+    return <Succspage />;
+  }
+
 
   return (
     <div style={{ maxWidth: 400, margin: '2rem auto', padding: 20, border: '1px solid #ccc', borderRadius: 8 }}>

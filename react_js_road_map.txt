@@ -112,7 +112,7 @@
    Basic HTML, CSS, and JavaScript (ES6+ features like arrow functions, destructuring, modules, etc.)
 
 
-2. React Fundamentals
+2.  React Fundamentals
     What is React? Why use it?
     Components (Function vs. Class)
     JSX syntax
@@ -122,7 +122,7 @@
     Conditional rendering
     Lists and keys
 
-3. Styling in React
+3.  Styling in React
     Inline styles
     CSS files and importing CSS
     CSS Modules
@@ -133,12 +133,12 @@
     useEffect (side effects, fetching data)
     Custom hooks (optional, advanced)
 
-5. Component Communication
+5.  Component Communication
     Parent to child (props)
     Child to parent (callback functions)
     Sibling communication (lifting state up)
 
-6. Forms in React
+6.  Forms in React
     Controlled components
     Handling form submission
     Validation basics
@@ -147,7 +147,7 @@
    React Router basics (install, setup, <Route>, <Link>, navigation)
 
 
-8. Fetching Data
+8.  Fetching Data
     Fetch API or Axios
     Using useEffect for API calls
     Loading and error states

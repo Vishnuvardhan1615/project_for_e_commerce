@@ -6,6 +6,9 @@ import EmbeddingExpressions from './project_folder/EmbeddingExpression';
 
 import AttributesAndProps from './project_folder/AttributesAndProps';
 import OneParentElement from './project_folder/OneParentElement';
+import UserProfile from './project_folder/entry_form';
+import Sibling_data from './project_folder/sibling_data';
+// import MyFileCreate from './project_folder/my_file_create';
 
 function App() {
   return (
@@ -16,6 +19,8 @@ function App() {
       <EmbeddingExpressions />
       <AttributesAndProps />
       <OneParentElement />
+      <UserProfile />
+      <Sibling_data />
     </div>
   );
 }

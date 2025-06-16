@@ -1,39 +1,24 @@
-import React from 'react';
-import OtpForm from './project_folder/OtpForm';
-import CountIncrease from './project_folder/count_increase';
-import UsestateWithName from './project_folder/usesate_with_name';
-import EmbeddingExpressions from './project_folder/EmbeddingExpression';
-
-import AttributesAndProps from './project_folder/AttributesAndProps';
-import OneParentElement from './project_folder/OneParentElement';
-import UserProfile from './project_folder/entry_form';
-import Sibling_data from './project_folder/sibling_data';
-import Featch_data from './project_folder/featch_data_form';
-// import POST_data_from  from './project_folder/post_data_report';
-import POST_data_from from './project_folder/post_data_report';
+import React, { useState, useEffect } from 'react';
 import ProductProjectApi from './project_folder/product_project_api';
-// import ProductProjectApi from './project_folder/product_project_api';
-// import MyFileCreate from './project_folder/my_file_create';
+import WebsiteEntrySplash from './project_folder/WebsiteEntrySplash';
 
 function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    // Optionally, you can move splash logic here if you want to control it globally
+  }, []);
+
+  if (showSplash) {
+    return <WebsiteEntrySplash onFinish={() => setShowSplash(false)} />;
+  }
+
   return (
-    <div className="App">
-      <OtpForm />
-      <CountIncrease />
-      <UsestateWithName />
-      <EmbeddingExpressions />
-      <AttributesAndProps />
-      <OneParentElement />
-      <UserProfile />
-      <Sibling_data />
-      <Featch_data />
-      <POST_data_from />
+    <div>
       <ProductProjectApi />
     </div>
   );
 }
-
-
 
 export default App;
 

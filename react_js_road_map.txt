@@ -168,3 +168,41 @@
 
 12. Deployment
     Build and deploy with Vercel, Netlify, or GitHub Pages
+
+
+
+
+
+
+
+free api for texting links 
+
+
+1. JSONPlaceholder (Fake REST API)
+    Users: https://jsonplaceholder.typicode.com/users
+    Posts: https://jsonplaceholder.typicode.com/posts
+    Comments: https://jsonplaceholder.typicode.com/comments
+    Todos: https://jsonplaceholder.typicode.com/todos
+    Albums: https://jsonplaceholder.typicode.com/albums
+    Photos: https://jsonplaceholder.typicode.com/photos
+2. ReqRes (Fake API for Testing)
+    Users (paginated): https://reqres.in/api/users
+    Single user: https://reqres.in/api/users/2
+    Create user (POST): https://reqres.in/api/users
+3. Random User Generator
+    Random users: https://randomuser.me/api/?results=10
+4. DummyJSON (Fake data for testing)
+    Users: https://dummyjson.com/users
+    Products: https://dummyjson.com/products
+    Posts: https://dummyjson.com/posts
+    Comments: https://dummyjson.com/comments
+    Todos: https://dummyjson.com/todos
+5. OpenWeatherMap (Weather data, requires free API key)
+    Current weather: https://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_API_KEY
+6. The Dog API (Random dog images)
+    Random dog image: https://dog.ceo/api/breeds/image/random
+7. The Cat API (Random cat images)
+    Random cat image: https://api.thecatapi.com/v1/images/search
+8. Public APIs Directory (Find more APIs)
+    https://public-apis.io/
+    https://github.com/public-apis/public-apis

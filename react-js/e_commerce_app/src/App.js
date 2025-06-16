@@ -11,6 +11,8 @@ import Sibling_data from './project_folder/sibling_data';
 import Featch_data from './project_folder/featch_data_form';
 // import POST_data_from  from './project_folder/post_data_report';
 import POST_data_from from './project_folder/post_data_report';
+import ProductProjectApi from './project_folder/product_project_api';
+// import ProductProjectApi from './project_folder/product_project_api';
 // import MyFileCreate from './project_folder/my_file_create';
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
       <Sibling_data />
       <Featch_data />
       <POST_data_from />
+      <ProductProjectApi />
     </div>
   );
 }

@@ -55,15 +55,25 @@ function PostDateReport()
            <h1>Data Received</h1>
            <ul>
               {(() => {
+                 const items1 = [];
                  const items = [];
-                 for(let i = 0; i < user_id.length; i++) 
-                 {
+                 let currentHeading = null;
+                 for(let i = 0; i < user_id.length; i++) {
                     const user = user_id[i];
+                    // Show heading every 10 records
+                    if (i % 10 === 0) {
+                       items1.push(<span key={`break-${i}`}>{i}<br /></span>);
+                       currentHeading = `Group ${(i / 10) + 1} (Records ${i + 1} - ${Math.min(i + 10, user_id.length)})`;
+                       items.push(
+                         <li key={`heading-${i}`} style={{fontWeight: 'bold', color: 'blue', listStyle: 'none', marginTop: '10px'}}>{currentHeading}</li>
+                       );
+                    }
                     items.push(
-                       <li key={user.id}>{user.userId} - {user.id}  </li>
+                       <li key={user.id}>{user.userId} - {user.id}</li>
                     );
                  }
-                 return items;
+                 return items1;
+                //  return items;
               })()}
            </ul>
 

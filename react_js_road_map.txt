@@ -154,7 +154,7 @@
 
 
 
-9. Project Structure & Best Practices
+9.  Project Structure & Best Practices
     Organizing components and files
     Reusable components
     Code splitting (optional, advanced)

@@ -1,14 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function EntryFormPopup({ onClose }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  // Send OTP to email
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(onClose, 1500); // Auto-close after submit
+    setMessage('');
+    if (!email) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/otp_page', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      setMessage(data.message || data.error);
+      if (response.ok) {
+        setOtpSent(true);
+      }
+    } catch (err) {
+      setMessage('Failed to send OTP. Please try again.');
+    }
+    setLoading(false);
+  };
+
+  // Verify OTP (optional, if you want to add OTP verification)
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setMessage('');
+    setLoading(true);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp }),
+      });
+      const data = await response.json();
+      setMessage(data.message || data.error);
+      if (response.ok) {
+        setSubmitted(true);
+        setTimeout(onClose, 1500);
+      }
+    } catch (err) {
+      setMessage('Failed to verify OTP. Please try again.');
+    }
+    setLoading(false);
   };
 
   return (
@@ -39,8 +86,8 @@ function EntryFormPopup({ onClose }) {
         <p style={{ margin: '12px 0 18px', color: '#333', fontSize: '1.1rem' }}>Enter your details to get started!</p>
         {submitted ? (
           <div style={{ color: '#007bff', fontWeight: 600, fontSize: '1.1rem', margin: '18px 0' }}>Thank you! 🎉</div>
-        ) : (
-          <form onSubmit={handleSubmit}>
+        ) : !otpSent ? (
+          <form onSubmit={handleSendOtp}>
             <input
               type="text"
               placeholder="Your Name"
@@ -57,9 +104,26 @@ function EntryFormPopup({ onClose }) {
               required
               style={{ width: '100%', marginBottom: 16, padding: 8, borderRadius: 6, border: '1px solid #bbb' }}
             />
-            <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 6, background: '#007bff', color: '#fff', fontWeight: 600, border: 'none', fontSize: '1rem', cursor: 'pointer' }}>Submit</button>
+            <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 6, background: '#007bff', color: '#fff', fontWeight: 600, border: 'none', fontSize: '1rem', cursor: 'pointer' }} disabled={loading}>
+              {loading ? 'Sending OTP...' : 'Send OTP'}
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleVerifyOtp}>
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={e => setOtp(e.target.value)}
+              required
+              style={{ width: '100%', marginBottom: 16, padding: 8, borderRadius: 6, border: '1px solid #bbb' }}
+            />
+            <button type="submit" style={{ width: '100%', padding: 10, borderRadius: 6, background: '#007bff', color: '#fff', fontWeight: 600, border: 'none', fontSize: '1rem', cursor: 'pointer' }} disabled={loading}>
+              {loading ? 'Verifying...' : 'Verify OTP'}
+            </button>
           </form>
         )}
+        {message && <div style={{ marginTop: 16, color: '#007bff', fontWeight: 500 }}>{message}</div>}
         <button onClick={onClose} style={{ marginTop: 18, background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', fontWeight: 600, fontSize: '1rem' }}>Close</button>
         <style>{`
           @keyframes popIn {

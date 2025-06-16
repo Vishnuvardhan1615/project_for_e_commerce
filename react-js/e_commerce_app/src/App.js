@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ProductProjectApi from './project_folder/product_project_api';
+import AnimatedHeader from './project_folder/AnimatedHeader';
+import HomePage from './project_folder/HomePage';
 import WebsiteEntrySplash from './project_folder/WebsiteEntrySplash';
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
 
   return (
     <div>
-      <ProductProjectApi />
+      <AnimatedHeader />
+      <HomePage />
     </div>
   );
 }

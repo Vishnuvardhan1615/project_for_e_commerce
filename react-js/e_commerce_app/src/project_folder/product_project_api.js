@@ -21,7 +21,7 @@ function ProductProjectApi()
         fetch("https://dummyjson.com/products")
         .then((response) => response.json())
         .then((data) => {
-            setProducts(data.products || []);
+            setProducts(data.products || []); // Show all products, not just a subset
            });
  
       },[]);
@@ -131,13 +131,14 @@ function ProductProjectApi()
             onMouseMove={handleMouseMove}
             draggable={false}
           />
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '10px', marginTop: '10px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', marginBottom: '10px', marginTop: '10px', maxWidth: 340 }}>
+            {/* Show all images for the current product as thumbnails */}
             {product.images && product.images.map((img, idx) => (
               <img
                 key={idx}
                 src={img}
                 alt={product.title + ' img'}
-                style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '6px', border: idx === mainImageIndex ? '2px solid #007bff' : '1px solid #ccc', cursor: 'pointer' }}
+                style={{ width: '64px', height: '64px', objectFit: 'cover', borderRadius: '6px', border: idx === mainImageIndex ? '2px solid #007bff' : '1px solid #ccc', cursor: 'pointer', marginBottom: 4 }}
                 onClick={() => setMainImageIndex(idx)}
                 draggable={false}
               />
